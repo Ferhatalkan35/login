@@ -38,7 +38,13 @@ export class AuthComponentComponent implements OnInit {
       });
     }  
   }
-
+  restrictInput(event: any) {
+    let input = event.target.value;
+    event.target.value = input.replace(/[^0-9]/g, ''); // Sadece rakamları kabul eder
+  }
+  kontrol (){
+    console.log("kontrol fonksiyonum")
+  }
   register(){
     var formData: any = new FormData();
     if(this.formData.valid){
