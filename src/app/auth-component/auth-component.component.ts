@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-
+import { HttpClient } from '@angular/common/http';
+import { User } from '../class/user';
 @Component({
   selector: 'app-auth-component',
   templateUrl: './auth-component.component.html',
@@ -12,7 +14,7 @@ export class AuthComponentComponent implements OnInit {
   formData: FormGroup;
   isLoading: boolean = false;
 
-  constructor(private fb: FormBuilder, private auth: AuthService) {
+  constructor(private fb: FormBuilder, private auth: AuthService,private http:HttpClient,private toastController: ToastController) {
     this.formData = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
@@ -20,7 +22,36 @@ export class AuthComponentComponent implements OnInit {
       password: ['', [Validators.required]],
     });
   }
+yenikullanici:User=new User();
+sifret:string="";
+kontrol(){
+  console.log("KONTROL" ,this.yenikullanici)
+  if(this.sifret==this.yenikullanici.sifre){
 
+    this.http.post("http://localhost:5000/signUp",{
+      userName:this.yenikullanici.userName,
+      userEmail:this.yenikullanici.userEmail,
+      userPhone:this.yenikullanici.userTel,
+      userPass:this.yenikullanici.sifre
+    }).subscribe(r=>{
+      console.log(r);
+      this.presentToast("KAYIT BAŞARILI",'middle');
+    })
+
+  }else{
+      this.presentToast("ŞİFRENİZ EŞLEŞMİYOR",'middle')
+  }
+}
+
+async presentToast(message :string,position: 'top' | 'middle' | 'bottom') {
+  const toast = await this.toastController.create({
+    message: message,
+    duration: 1500,
+    position: position,
+  });
+
+  await toast.present();
+}
   ngOnInit() {}
 
   change(event: string) {
@@ -51,7 +82,7 @@ export class AuthComponentComponent implements OnInit {
     event.target.value = input.replace(/[^0-9]/g, ''); // Sadece rakamları kabul eder
   }
 
-  kontrol() {
+  kontrol2() {
     console.log("🔍 Kontrol fonksiyonu çalıştı!");
   }
 

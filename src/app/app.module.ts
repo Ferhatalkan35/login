@@ -4,10 +4,10 @@ import { RouteReuseStrategy } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
 import { AuthComponentComponent } from './auth-component/auth-component.component';
 
 @NgModule({
